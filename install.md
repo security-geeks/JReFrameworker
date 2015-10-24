@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Install
-permalink: /about/
+permalink: /install/
 ---
 
 Coming soon.
