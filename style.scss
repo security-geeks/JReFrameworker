@@ -18,14 +18,14 @@ html {
 }
 
 body {
-	background: $white;
+  background: $white;
   font: 18px/1.4 $helvetica;
   color: $darkGray;
 }
 
 .container {
   margin: 0 auto;
-  max-width: 765px;
+  max-width: 760px;
   padding: 0 10px;
   width: 100%;
 }
@@ -224,7 +224,7 @@ nav {
   }
 
   a {
-    margin-left: 20px;
+    margin-left: 15px;
     color: $darkGray;
     text-align: right;
     font-weight: 300;
