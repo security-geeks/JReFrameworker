@@ -10,4 +10,4 @@ This project aims to extend the work done by Erez Metula in his book [Managed Co
 ## JReFrameworker
 Since ReFrameworker is no longer maintained, this project aims to extend previous works by introducing JReFrameworker, a tool to produce MCR capabilities aimed at the Java Runtime Environment in a user-friendly way. 
 
-JReFrameworker is an Eclipse plugin for creating and building projects that allow the user to write annotated Java source that is automatically merged or inserted into the runtime.  The framework supports developing and debugging attack modules directly in the Eclipse IDE. Working at the intended abstraction level of source code allows the attacker to "write once, exploit anywhere"".
+JReFrameworker is an Eclipse plugin for creating and building projects that allow the user to write annotated Java source that is automatically merged or inserted into the runtime.  The framework supports developing and debugging attack modules directly in the Eclipse IDE. Working at the intended abstraction level of source code allows the attacker to "write once, exploit anywhere".
