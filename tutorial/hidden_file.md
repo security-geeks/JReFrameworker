@@ -227,8 +227,14 @@ Before we begin testing, we should remember to revert our test logic back to the
 	
 	}
 	
-Now that our test logic is using whatever implementation of `java.io.File` exists in the runtime environment we can run it again as a standard Java application.  It should return true as is the normal expectation of the runtime. To run `Test` again with the modified runtime use the JReFrameworker *Run* or *Debug* launch profile as shown in the image below.  Running with either of these launch profiles runs `Test` in the modified runtime (located at `<project>/runtimes/rt.jar`).  If everything was done correctly, the test program should return false!
+Now that our test logic is using whatever implementation of `java.io.File` exists in the runtime environment we can run it again as a standard Java application.  It should return true as is the normal expectation of the runtime. To run `Test` again with the modified runtime use the JReFrameworker *Run* or *Debug* launch profile as shown in the image below.
 
 <center>
 ![Decompiled Original Method](/JReFrameworker/tutorial/hidden_file_images/JReFrameworkerRunConfiguration.png)
 </center>
+
+Running with either of these launch profiles runs `Test` in the modified runtime (located at `<project>/runtimes/rt.jar`).  If everything was done correctly, the test program should return false! We will cover the steps to deploy the module's bytecode manipulations on a victims machine in a later step.
+
+At this point you can save and share your module with others by right clicking on the project and navigating to `Export...` &gt; `General` &gt; `Archive File` and saving the project as an archive file.
+
+You can download the module created during this tutorial [here](https://ben-holland.com/JReFrameworker/module/hidden_file.zip).
