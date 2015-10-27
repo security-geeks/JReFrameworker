@@ -71,7 +71,7 @@ In this tutorial we use Eclipse to resolve the compile error by generating a `Hi
 ![Successful Compile](/JReFrameworker/tutorial/hidden_file_images/SuccessfulCompile.png)
 </center>
 
-Now that we have created a subclass of `java.io.File` we can override the behavior of the `File.exists()` method with out desired functionality. First we can levearge the inherited `File.isFile()` and `File.getName()` methods to check if the `File` object is a file (and not a directory) and that the filename matches "secretFile".  If both conditions are true we can immediately return false.  Since we wish for the functionality of `HiddenFile.exists()` to behave normally in all other cases we can simply call `File.exists()` using the `super` to access the parent's method implementation.  After making these modifications we arrive at the following implementation for the `HiddenFile` class.
+Now that we have created a subclass of `java.io.File` we can override the behavior of the `File.exists()` method with out desired functionality. First we can levearge the inherited `File.isFile()` and `File.getName()` methods to check if the `File` object is a file (and not a directory) and that the filename matches "secretFile".  If both conditions are true we can immediately return false.  Since we wish for the functionality of `HiddenFile.exists()` to behave normally in all other cases we can simply call `File.exists()` using the [super keyword](https://docs.oracle.com/javase/tutorial/java/IandI/super.html) to access the parent's method implementation.  After making these modifications we arrive at the following implementation for the `HiddenFile` class.
 
 	package java.io;
 	
@@ -94,6 +94,8 @@ Now that we have created a subclass of `java.io.File` we can override the behavi
 	
 	}
 
+Note that we use the source level annotation `@Override` here to ensure that the exists method is actually overriding `File.exists()`.  Source methods such as `@Override` do not get compiled into the resulting bytecode.
+
 We can test the implementation of our prototype `HiddenFile` class by modifying our `Test` class code to instantiate a `File` object of type `HiddenFile`.  If the test logic does not produce the desired result, we can take this opportunity to set breakpoints in the `HiddenFile` class and debug it appropriately.
 
 	import java.io.File;
@@ -113,6 +115,12 @@ We can test the implementation of our prototype `HiddenFile` class by modifying 
 		}
 	
 	}
+	
+**Important Note:** The `java.io` package is a restricted package.  Running the test logic that includes a class extending a class in a restricted package will likely throw an exception depending on your current runtime security policy.
+
+	Exception in thread "main" java.lang.SecurityException: Prohibited package name: java.io
+	
+If need be, this issue can be avoided by moving the `HiddenFile` class to a non-restricted package such as the default package or `modules.java.io`.
 
 ## JReFrameworker Annotations
 
