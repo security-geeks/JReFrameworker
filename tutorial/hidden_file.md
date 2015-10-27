@@ -126,15 +126,14 @@ If need be, this issue can be avoided by moving the `HiddenFile` class to a non-
 
 At this point we will take a short digression to examine the annotations provided by the JReFrameworker plugin.  There are two primary classes of annotations: define and merge annotations.  For both classes of annotations there are three levels that annotations may be applied: type, method, and field.  The following matrix defines each supported annotation type.
 
-|            | **Define**      | **Merge**      |
-|------------|-----------------|----------------|
-| **Type**   | *@DefineType*   | *@MergeType*   |
-| **Method** | *@DefineMethod* | *@MergeMethod* |
-| **Field**  | *@DefineField*  | unsupported    |
+|            | **Define**      | **Merge**       |
+|------------|-----------------|-----------------|
+| **Type**   | *@DefineType*   | *@MergeType*    |
+| **Method** | *@DefineMethod* | *@MergeMethod*  |
+| **Field**  | *@DefineField*  | N/A             |
 
-<br />
 
-| **Annotation Type** | **Description**                                                                                                                                                                                                                         |
+| **Annotation&nbsp;Type** | **Description**                                                                                                                                                                                                                         |
 |---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | *@DefineType*       | Inserts or overwrites the class or interface into the runtime with the fields and methods of the current type.                                                                                                                          |
 | *@DefineMethod*     | Inserts or overwrites the method into the runtime type. The current type must also be annotated with *@MergeType*.                                                                                                                      |
