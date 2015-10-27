@@ -120,7 +120,7 @@ We can test the implementation of our prototype `HiddenFile` class by modifying 
 
 	Exception in thread "main" java.lang.SecurityException: Prohibited package name: java.io
 	
-If need be, this issue can be avoided by moving the `HiddenFile` class to a non-restricted package such as the default package or `modules.java.io`.
+If need be, this issue can be avoided by moving the `HiddenFile` class to a non-restricted package such as the default package or a new package such as `modules.java.io`.
 
 ## JReFrameworker Annotations
 
@@ -131,6 +131,8 @@ At this point we will take a short digression to examine the annotations provide
 | **Type**   | *@DefineType*   | *@MergeType*   |
 | **Method** | *@DefineMethod* | *@MergeMethod* |
 | **Field**  | *@DefineField*  | unsupported    |
+
+<br />
 
 | **Annotation Type** | **Description**                                                                                                                                                                                                                         |
 |---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
