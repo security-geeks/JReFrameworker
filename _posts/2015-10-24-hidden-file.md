@@ -7,4 +7,4 @@ This module modifies the runtime to return false for the existence of a specific
 
 Note that a more detailed explanation of this attack module is available in the [hidden file tutorial](/JReFrameworker/tutorial/hidden_file).
 
-**Download:** [Hidden File Attack Module](/JReFrameworker/module/hidden_file.zip)
+**Download:** [Hidden File Attack Module](/JReFrameworker/module/HiddenFile.zip)
