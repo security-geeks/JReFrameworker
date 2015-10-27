@@ -45,9 +45,9 @@ Next let's add some test code that will interact with the `java.io.File` API so 
 ![Test Logic](/JReFrameworker/tutorial/hidden_file_images/TestLogic.png)
 </center>
 
-In an unmodified runtime, the print out should return "true" assuming the file could be written.  In the event that a file could not be written and exception will be thrown causing stack trace to be written to the output.
+In an unmodified runtime, the print out should return "true" assuming the file could be written.  In the event that a file could not be written an exception will be thrown causing stack trace to be written to the output.
 
-Our goal is to modify the runtime so that the print out reads "false" if and only if the `File` object's name is "secretFile".
+Our goal is to modify the runtime so that the print out reads "false" if the `File` object's name is "secretFile" regardless if the file actually exists on the file system, while maintaining the original functionality of the `File.exists()` method in all other cases.
 
 ## JReFrameworker Annotations
 Coming soon...
