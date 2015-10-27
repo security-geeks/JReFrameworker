@@ -147,9 +147,9 @@ As described in the previous section, annotations are used to guide the behavior
 
 First we should consider the type level annotations. We want to maintain the original functionality of `java.io.File`, so we should not use the *@DefineType* annotation since it would overwrite the entire functionality of the original class.  This leaves us with the *@MergeType* annotation, which allows us to replace parts of the API while maintaining the original functionality of the original class.
 
-The `HiddenFile` constructor and the `serialVersionUID` field were necessary for compiling and testing the `HiddenFile` functionality without warnings. The constructor and field are not needed for modifying the original `File` class however, so we will not annotated either the constructor of the field. JReFrameworker will ignore fields and methods that are not annotated when merging two types. 
+The `HiddenFile` constructor and the `serialVersionUID` field were necessary for compiling and testing the `HiddenFile` functionality without warnings. The constructor and field are not needed for modifying the original `File` class however, so we will not annotate either the constructor or the field. JReFrameworker will ignore fields and methods that are not annotated when merging two types. 
 
-This brings us to the `HiddenFile.exists()` method. Using *@DefineMethod* would be unwise here because it would completely replace the `File.exists()` method, which we are still depending on through our `super.exists()` method call!  Instead we should use the *@MergeMethod* annotation, which preserves the old `File.exists()` method by renaming and making the method private. Any calls to the original File.exists() method through *super* calls will get automatically replaced with calls to the renamed version of the original method.
+This brings us to the `HiddenFile.exists()` method. Using *@DefineMethod* would be unwise here because it would completely replace the `File.exists()` method, which we are still depending on through our `super.exists()` method call!  Instead we should use the *@MergeMethod* annotation, which preserves the old `File.exists()` method by renaming and making the method private. Any calls to the original `File.exists()` method through *super* calls will automatically get replaced with calls to the renamed version of the original method.
 
 After adding the appropriate annotation our `HiddenFile` implementation should look like the following.
 
@@ -179,9 +179,56 @@ After adding the appropriate annotation our `HiddenFile` implementation should l
 	
 	}
 	
+For a merge, it is not important what package the subclass is in.  JReFrameworker will merge the annotated methods and fields of a class to merge into the parent class.  However, if we were defining (inserting or replacing) a runtime class the package would be important.
+	
 JReFrameworker implements a custom builder that automatically detects annotations and modifies the runtime appropriately. After pressing the save button you have effectively modified the runtime!
 
 **Important Note:** Until incremental building support is implemented, you may have to perform a `Build` &gt; `Clean` operation from within Eclipse to trigger a fresh build of the runtime.
 
+**Important Node:** Note that the modified runtime is only a local version of the runtime.  During development JReFrameworker does not replace your system's version of runtime libraries (as this would negatively effect Eclipse and would be essentially attacking the attacker...).  Steps to deploy the module to a victim's machine will be covered in a later tutorial.
+
+## Understanding the Bytecode Manipulations
+Let's digress one more time for a minute to take a look at the bytecode manipulations that were made by JReFrameworker.
+
+The modified version of the runtime library is placed in the `runtimes` directory stored in the JReFrameworker project. Let's decompile the modified `rt.jar` runtime file using the free [JAD decompiler](http://jd.benow.ca/). Alternatively you may choose to use the free [Java Bytecode Viewer](https://bytecodeviewer.com/) to view both the decompiled source and the raw bytecode instructions.
+
+Inspecting the modified version of `java.io.File` shows that the original `File.exists()` method was renamed to `jref_exists()` and made private as shown in the figure below. Note that the prefix used to renamed methods can be edited by changing the JReFrameworker preferences under `Eclipse` &gt; `Preferences...` (or `Window` &gt; `Preferences...`) &gt; `JReFrameworker`.
+
+<center>
+![Decompiled Original Method](/JReFrameworker/tutorial/hidden_file_images/OriginalMethod.png)
+</center>
+
+Inspecting the new version of `java.io.File` reveals that the new `File.exists()` method first calls `File.isFile()` and then `File.getName()` to check if the `File` is a file (and not a directory) and that the filename equals "secretFile".  If both conditions are true, then the boolean value of false is returned immediately. Otherwise the value of `File.jref_exists()` is returned.
+
+<center>
+![Decompiled Original Method](/JReFrameworker/tutorial/hidden_file_images/NewMethod.png)
+</center>
+
+Note that if we inspect at the bytecode level, we would find that special invocations through *super* calls are replaced with dynamic invocations and all instruction owners have been remapped from the subclass type to the base class type where applicable. 
+
 ## Testing the Modified Runtime
-Coming soon...
+
+Before we begin testing, we should remember to revert our test logic back to the original test so we avoid calling any versions of the locally implemented `HiddenFile` functionality.
+
+	import java.io.File;
+	import java.io.FileWriter;
+	import java.io.IOException;
+	
+	public class Test {
+	
+		public static void main(String[] args) throws IOException {
+			File testFile = new File("secretFile");
+			FileWriter fw = new FileWriter(testFile);
+			fw.write("blah");
+			fw.close();
+			System.out.println("Secret File Exists: " + testFile.exists());
+			testFile.delete();
+		}
+	
+	}
+	
+Now that our test logic is using whatever implementation of `java.io.File` exists in the runtime environment we can run it again as a standard Java application.  It should return true as is the normal expectation of the runtime. To run `Test` again with the modified runtime use the JReFrameworker *Run* or *Debug* launch profile as shown in the image below.  Running with either of these launch profiles runs `Test` in the modified runtime (located at `<project>/runtimes/rt.jar`).  If everything was done correctly, the test program should return false!
+
+<center>
+![Decompiled Original Method](/JReFrameworker/tutorial/hidden_file_images/JReFrameworkerRunConfiguration.png)
+</center>
