@@ -85,3 +85,4 @@ exclude:
 include:
     - updates/
     - javadoc/
+    - module/
