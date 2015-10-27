@@ -71,7 +71,7 @@ In this tutorial we use Eclipse to resolve the compile error by generating a `Hi
 ![Successful Compile](/JReFrameworker/tutorial/hidden_file_images/SuccessfulCompile.png)
 </center>
 
-Now that we have created a subclass of `java.io.File` we can override the behavior of the `File.exists()` method with out desired functionality. First we can levearge the inherited `File.isFile()` and `File.getName()` methods to check if the `File` object is a file (and not a directory) and that the filename matches "secretFile".  If both conditions are true we can immediately return false.  Since we wish for the functionality of `HiddenFile.exists()` to behave normally in all other cases we can simply call `File.exists()` using the [super keyword](https://docs.oracle.com/javase/tutorial/java/IandI/super.html) to access the parent's method implementation.  After making these modifications we arrive at the following implementation for the `HiddenFile` class.
+Now that we have created a subclass of `java.io.File` we can override the behavior of the `File.exists()` method with our desired functionality. First we can levearge the inherited `File.isFile()` and `File.getName()` methods to check if the `File` object is a file (and not a directory) and that the filename matches "secretFile".  If both conditions are true we can immediately return false.  Since we wish for the functionality of `HiddenFile.exists()` to behave normally in all other cases we can simply call `File.exists()` using the [super keyword](https://docs.oracle.com/javase/tutorial/java/IandI/super.html) to access the parent's method implementation.  After making these modifications we arrive at the following implementation for the `HiddenFile` class.
 
 	package java.io;
 	
@@ -124,4 +124,21 @@ If need be, this issue can be avoided by moving the `HiddenFile` class to a non-
 
 ## JReFrameworker Annotations
 
+At this point we will take a short digression to examine the annotations provided by the JReFrameworker plugin.  There are two primary classes of annotations: define and merge annotations.  For both classes of annotations there are three levels that annotations may be applied: type, method, and field.  The following matrix defines each supported annotation type.
+
+|            | **Define**      | **Merge**      |
+|------------|-----------------|----------------|
+| **Type**   | *@DefineType*   | *@MergeType*   |
+| **Method** | *@DefineMethod* | *@MergeMethod* |
+| **Field**  | *@DefineField*  | unsupported    |
+
+| **Annotation Type** | **Description**                                                                                                                                                                                                                         |
+|---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| *@DefineType*       | Inserts or overwrites the class or interface into the runtime with the fields and methods of the current type.                                                                                                                          |
+| *@DefineMethod*     | Inserts or overwrites the method into the runtime type. The current type must also be annotated with *@MergeType*.                                                                                                                      |
+| *@DefineField*      | Inserts or overwrites the field into the runtime type.  The current type must also be annotated with *@MergeType*.                                                                                                                      |
+| *@MergeType*        | Merges the fields and methods of the current type into the existing runtime type based on the field and method annotation types.                                                                                                        |
+| *@MergeMethod*      | Replaces the method in the existing runtime type.  The original runtime method is renamed and made private.  Calls using the super keyword to the original method are replaced with dynamic invocations to the renamed original method. |
+
+## Modifying the Runtime
 Coming soon...
