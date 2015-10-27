@@ -4,14 +4,14 @@ layout: default
 
 This tutorial outlines the steps to create a module with JReFrameworker to modify the behavior of the Java runtime's `java.io.File` class to return false if the file name is "secretFile" regardless if the file actually exists or not.
 
-## Creating a new module
+## Creating a New Module
 
 Each "module" consists of an Eclipse JReFrameworker project.  A module consists of annotated Java source code for one or more Java classes, which define how the runtime environment should be modified. A module may also contain test code that uses the runtime APIs that will be modified.  The test code can be used to execute and debug the module in the modified as well as original runtime environments.
 
 To create a new attack module, navigate to `File` &gt; `New` &gt; `Other...` &gt; `JReFrameworker` &gt; `JReFrameworker Runtime Project`.
 
 <center>
-![New Modue](/JReFrameworker/tutorial/hidden_file_images/NewProject.png)
+![New Module](/JReFrameworker/tutorial/hidden_file_images/NewProject.png)
 </center>
 
 Enter a new project name for the module.
@@ -20,7 +20,7 @@ Enter a new project name for the module.
 ![Module Name](/JReFrameworker/tutorial/hidden_file_images/NewProjectName.png)
 </center>
 
-## Adding test logic
+## Adding Test Logic
 
 Next let's add some test code that will interact with the `java.io.File` API so that we can effectively test the modified runtime. The following `Test` class contains a main method that creates a `File` named "secretFile" and writes the string "blah" to the file.  After the file is written, the existence of the file is printed to the console.  Finally, the file is deleted.
 
@@ -49,5 +49,71 @@ In an unmodified runtime, the print out should return "true" assuming the file c
 
 Our goal is to modify the runtime so that the print out reads "false" if the `File` object's name is "secretFile" regardless if the file actually exists on the file system, while maintaining the original functionality of the `File.exists()` method in all other cases.
 
+## Prototyping Intended Behavior
+
+Let's prototype a class that has the behavior we intend to modify the runtime with by developing the class as if we had control of the source code to the `File` class.  Since we are designing special case of `java.io.File` this a prime example of how Object Oriented languages can leveraged to make a subclass containing the desired behavior.
+
+In this tutorial we will use the Eclipse New Class Wizard to create a subclass of `java.io.File`.  We create a class named `HiddenFile` that extends `java.io.File` in the package `java.io`.
+
+<center>
+![New Class Wizard](/JReFrameworker/tutorial/hidden_file_images/NewClassWizard.png)
+</center>
+
+Now because the `File` class does not have a default constructor, creating a subclass of `File` causes a compile error if we do not also create a `HiddenFile` constructor.  
+
+<center>
+![Compile Error](/JReFrameworker/tutorial/hidden_file_images/CompileError.png)
+</center>
+
+In this tutorial we use Eclipse to resolve the compile error by generating a `HiddenFile` constructor.  Optionally, we can also use Eclipse to resolve the warning that `HiddenFile` does not declare a `serialVersionUID` field.
+
+<center>
+![Successful Compile](/JReFrameworker/tutorial/hidden_file_images/SuccessfulCompile.png)
+</center>
+
+Now that we have created a subclass of `java.io.File` we can override the behavior of the `File.exists()` method with out desired functionality. First we can levearge the inherited `File.isFile()` and `File.getName()` methods to check if the `File` object is a file (and not a directory) and that the filename matches "secretFile".  If both conditions are true we can immediately return false.  Since we wish for the functionality of `HiddenFile.exists()` to behave normally in all other cases we can simply call `File.exists()` using the `super` to access the parent's method implementation.  After making these modifications we arrive at the following implementation for the `HiddenFile` class.
+
+	package java.io;
+	
+	public class HiddenFile extends File {
+	
+		private static final long serialVersionUID = 1L;
+	
+		public HiddenFile(String name) {
+			super(name);
+		}
+		
+		@Override
+		public boolean exists(){
+			if(isFile() && getName().equals("secretFile")){
+				return false;
+			} else {
+				return super.exists();
+			}
+		}
+	
+	}
+
+We can test the implementation of our prototype `HiddenFile` class by modifying our `Test` class code to instantiate a `File` object of type `HiddenFile`.  If the test logic does not produce the desired result, we can take this opportunity to set breakpoints in the `HiddenFile` class and debug it appropriately.
+
+	import java.io.File;
+	import java.io.FileWriter;
+	import java.io.HiddenFile;
+	import java.io.IOException;
+	
+	public class Test {
+	
+		public static void main(String[] args) throws IOException {
+			File testFile = new HiddenFile("secretFile");
+			FileWriter fw = new FileWriter(testFile);
+			fw.write("blah");
+			fw.close();
+			System.out.println("Secret File Exists: " + testFile.exists());
+			testFile.delete();
+		}
+	
+	}
+
 ## JReFrameworker Annotations
+
 Coming soon...
