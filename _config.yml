@@ -75,5 +75,13 @@ exclude:
     - Gemfile
     - Gemfile.lock
     - LICENSE
+    - JekylNow-LICENSE
     - README.md
     - CNAME
+    - .git/
+    - .gitignore
+
+# Include the following files and directories
+include:
+    - updates/
+    - javadoc/
