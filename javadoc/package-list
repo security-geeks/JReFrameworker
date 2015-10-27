@@ -1,0 +1,14 @@
+jreframeworker
+jreframeworker.annotations.fields
+jreframeworker.annotations.methods
+jreframeworker.annotations.types
+jreframeworker.builder
+jreframeworker.common
+jreframeworker.core
+jreframeworker.core.bytecode.identifiers
+jreframeworker.core.bytecode.operations
+jreframeworker.core.bytecode.utils
+jreframeworker.launcher
+jreframeworker.log
+jreframeworker.ui
+org.eclipse.wb.swt
