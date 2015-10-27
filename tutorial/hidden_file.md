@@ -71,7 +71,7 @@ In this tutorial we use Eclipse to resolve the compile error by generating a `Hi
 ![Successful Compile](/JReFrameworker/tutorial/hidden_file_images/SuccessfulCompile.png)
 </center>
 
-Now that we have created a subclass of `java.io.File` we can override the behavior of the `File.exists()` method with our desired functionality. First we can levearge the inherited `File.isFile()` and `File.getName()` methods to check if the `File` object is a file (and not a directory) and that the filename matches "secretFile".  If both conditions are true we can immediately return false.  Since we wish for the functionality of `HiddenFile.exists()` to behave normally in all other cases we can simply call `File.exists()` using the [super keyword](https://docs.oracle.com/javase/tutorial/java/IandI/super.html) to access the parent's method implementation.  After making these modifications we arrive at the following implementation for the `HiddenFile` class.
+Now that we have created a subclass of `java.io.File` we can override the behavior of the `File.exists()` method with our desired functionality. First we can leverage the inherited `File.isFile()` and `File.getName()` methods to check if the `File` object is a file (and not a directory) and that the filename matches "secretFile".  If both conditions are true we can immediately return false.  Since we wish for the functionality of `HiddenFile.exists()` to behave normally in all other cases we can simply call `File.exists()` using the [super keyword](https://docs.oracle.com/javase/tutorial/java/IandI/super.html) to access the parent's method implementation.  After making these modifications we arrive at the following implementation for the `HiddenFile` class.
 
 	package java.io;
 	
@@ -124,7 +124,7 @@ If need be, this issue can be avoided by moving the `HiddenFile` class to a non-
 
 ## JReFrameworker Annotations
 
-At this point we will take a short digression to examine the annotations provided by the JReFrameworker plugin.  There are two primary classes of annotations: define and merge annotations.  For both classes of annotations there are three levels that annotations may be applied: type, method, and field.  The following matrix defines each supported annotation type.
+At this point we will take a short digression to examine the annotations provided by the JReFrameworker plugin.  Annotations are used to guide the behavior of JReFrameworker during the bytecode rewriting steps desired in a module. There are two primary classes of annotations: define and merge annotations.  For both classes of annotations there are three levels that annotations may be applied: type, method, and field.  The following matrix defines each supported annotation type.
 
 |            | **Define**      | **Merge**       |
 |------------|-----------------|-----------------|
@@ -143,4 +143,45 @@ At this point we will take a short digression to examine the annotations provide
 | *@MergeMethod*      | Replaces the method in the existing runtime type.  The original runtime method is renamed and made private.  Calls using the super keyword to the original method are replaced with dynamic invocations to the renamed original method. |
 
 ## Modifying the Runtime
+As described in the previous section, annotations are used to guide the behavior of JReFrameworker during the bytecode rewriting steps desired in a module. This means that the steps of manipulating bytecode are completely abstracted away through the use of annotations.  To convert our `HiddenFile` prototype into a working module that rewrites the behavior of `java.io.File` we must carefully choose the annotations we wish to apply.
+
+First we should consider the type level annotations. We want to maintain the original functionality of `java.io.File`, so we should not use the *@DefineType* annotation since it would overwrite the entire functionality of the original class.  This leaves us with the *@MergeType* annotation, which allows us to replace parts of the API while maintaining the original functionality of the original class.
+
+The `HiddenFile` constructor and the `serialVersionUID` field were necessary for compiling and testing the `HiddenFile` functionality without warnings. The constructor and field are not needed for modifying the original `File` class however, so we will not annotated either the constructor of the field. JReFrameworker will ignore fields and methods that are not annotated when merging two types. 
+
+This brings us to the `HiddenFile.exists()` method. Using *@DefineMethod* would be unwise here because it would completely replace the `File.exists()` method, which we are still depending on through our `super.exists()` method call!  Instead we should use the *@MergeMethod* annotation, which preserves the old `File.exists()` method by renaming and making the method private. Any calls to the original File.exists() method through *super* calls will get automatically replaced with calls to the renamed version of the original method.
+
+After adding the appropriate annotation our `HiddenFile` implementation should look like the following.
+
+	package java.io;
+	
+	import jreframeworker.annotations.methods.MergeMethod;
+	import jreframeworker.annotations.types.MergeType;
+	
+	@MergeType
+	public class HiddenFile extends File {
+	
+		private static final long serialVersionUID = 1L;
+	
+		public HiddenFile(String name) {
+			super(name);
+		}
+		
+		@MergeMethod
+		@Override
+		public boolean exists(){
+			if(isFile() && getName().equals("secretFile")){
+				return false;
+			} else {
+				return super.exists();
+			}
+		}
+	
+	}
+	
+JReFrameworker implements a custom builder that automatically detects annotations and modifies the runtime appropriately. After pressing the save button you have effectively modified the runtime!
+
+**Important Note:** Until incremental building support is implemented, you may have to perform a `Build` &gt; `Clean` operation from within Eclipse to trigger a fresh build of the runtime.
+
+## Testing the Modified Runtime
 Coming soon...
