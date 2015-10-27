@@ -132,6 +132,7 @@ At this point we will take a short digression to examine the annotations provide
 | **Method** | *@DefineMethod* | *@MergeMethod*  |
 | **Field**  | *@DefineField*  | N/A             |
 
+<br />
 
 | **Annotation&nbsp;Type** | **Description**                                                                                                                                                                                                                         |
 |---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
