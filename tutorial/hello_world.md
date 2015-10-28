@@ -39,4 +39,4 @@ JReFrameworker is a tool that allows you to write simple Java source code with a
 	
 	}
 
-The JReFrameworker module developed for this tutorial can be downloaded [here](/JReFrameworker/module/HiddenFile.zip).
+The JReFrameworker module developed for this tutorial can be downloaded [here](/JReFrameworker/module/HelloWorld.zip).
