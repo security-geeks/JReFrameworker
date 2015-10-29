@@ -27,9 +27,11 @@ Ready to get started?
 Need additional resources?  Checkout the [Javadocs](/JReFrameworker/javadoc/index.html) or grab a copy of the [source](https://github.com/benjholla/JReFrameworker).
 
 ## Road Map
-This tool is currently operational, but still under development. Particularly I'd like to add or improve support for the following.
+This tool is operational, but [still under active development](https://github.com/benjholla/JReFrameworker/graphs/punch-card). I would like to add or improve support for the following by the end of the year. 
 
 - A payload dropper with support for [Metasploit Post-Exploitation Modules](https://www.offensive-security.com/metasploit-unleashed/post-module-reference/)
 - Support for merging class constructors and static initializers
 - Enhanced bytecode validity checks with respect to the entire runtime library (not just the generated class file)
 - Lots of example attack modules!
+
+If you find a problem please [report an issue](https://github.com/benjholla/JReFrameworker/issues). If you want to help [pull requests](https://github.com/benjholla/JReFrameworker/pulls) are always welcome.
