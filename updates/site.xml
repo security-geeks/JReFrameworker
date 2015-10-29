@@ -9,6 +9,9 @@
    <feature url="features/JReFrameworkerFeature_1.0.1.201510271526.jar" id="JReFrameworkerFeature" version="1.0.1.201510271526">
       <category name="JReFrameworker"/>
    </feature>
+   <feature url="features/JReFrameworkerFeature_1.0.2.201510282241.jar" id="JReFrameworkerFeature" version="1.0.2.201510282241">
+      <category name="JReFrameworker"/>
+   </feature>
    <category-def name="JReFrameworker" label="JReFrameworker">
       <description>
          JReFrameworker is an Eclipse plugin for creating and building projects that allow the user to write annotated Java source that is automatically merged or inserted into the runtime. The framework supports developing and debugging attack modules directly in the Eclipse IDE. Working at the intended abstraction level of source code allows the attacker to &quot;write once, exploit anywhere&quot;.
