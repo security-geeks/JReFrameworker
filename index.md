@@ -33,5 +33,6 @@ This tool is operational, but [still under active development](https://github.co
 - Support for merging class constructors and static initializers
 - Enhanced bytecode validity checks with respect to the entire runtime library (not just the generated class file)
 - Lots of example attack modules!
+- Evaluate attacking other JRE based runtimes (Scala, JRuby, Jython, etc.)
 
 If you find a problem please [report an issue](https://github.com/benjholla/JReFrameworker/issues). If you want to help, [pull requests](https://github.com/benjholla/JReFrameworker/pulls) are always welcome.
