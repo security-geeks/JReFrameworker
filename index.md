@@ -29,7 +29,7 @@ Need additional resources?  Checkout the [Javadocs](/JReFrameworker/javadoc/inde
 ## Project Road Map
 This tool is operational, but [still under active development](https://github.com/benjholla/JReFrameworker/graphs/punch-card). I would like to add or improve support for the following by the end of the year. 
 
-- A payload dropper with support for [Metasploit Post-Exploitation Modules](https://www.offensive-security.com/metasploit-unleashed/post-module-reference/)
+- ~~A payload dropper~~ with support for [Metasploit Post-Exploitation Modules](https://www.offensive-security.com/metasploit-unleashed/post-module-reference/)
 - Comprehensive review of runtime update strategies (in progress)
 - Support for merging class constructors, initializers, and static initializers
 - Enhanced bytecode validity checks with respect to the entire runtime library (not just the generated class files)

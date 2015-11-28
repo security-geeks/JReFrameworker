@@ -19,3 +19,18 @@ Follow the steps below to install the JReFrameworker plugin from the Eclipse upd
 
 ## Installing from source
 If you want to install from source for bleeding edge changes, first grab a copy of the [source](https://github.com/benjholla/JReFrameworker) repository. In the Eclipse workspace, import the `jreframeworker` and `org.objectweb.asm` Eclipse projects located in the source repository. Note that you must have the Eclipse Plugin Development Tools installed in Eclipse to compile the plugin projects. Right click on the `jreframeworker` project and select `Export`.  Select `Plug-in Development` &gt; `Deployable plug-ins and fragments`.  Select the `Install into host. Repository:` radio box and click `Finish`.  Press `OK` for the notice about unsigned software.  Once Eclipse restarts the plugin will be installed.
+
+## Changelog
+
+### 1.1.0
+- Support for exporting a basic based payload dropper
+
+### 1.0.2
+- Improvements to preferences
+- Bug fixes for builder
+
+### 1.0.1
+- Bug fix for missing annotations Jar in new projects
+
+### 1.0.0
+- Initial Release
