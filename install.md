@@ -22,6 +22,9 @@ If you want to install from source for bleeding edge changes, first grab a copy 
 
 ## Changelog
 
+### 1.1.1
+- Improved payload dropper with new command line options for specifying non-standard runtime locations and for specifying output options
+
 ### 1.1.0
 - Support for exporting a basic based payload dropper
 
